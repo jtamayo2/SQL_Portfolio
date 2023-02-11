@@ -177,3 +177,19 @@ FROM orders
 GROUP BY HOUR(time)
 ORDER BY HOUR(time)
 
+-- Grouping pizza size by Total Revenue
+SELECT
+  CASE
+    WHEN size = 'S' THEN 'Small'
+    WHEN size = 'M' THEN 'Medium'
+    WHEN size = 'L' THEN 'Large'
+    WHEN size = 'XL' THEN 'X-Large'
+    WHEN size = 'XXL' THEN 'XX-Large'
+    ELSE 'Other'
+  END AS 'Size Label',
+  ROUND(SUM(price * quantity)) AS 'Total Revenue'
+FROM order_details
+LEFT JOIN pizzas
+ON order_details.pizza_id = pizzas.pizza_id
+GROUP BY size;
+
